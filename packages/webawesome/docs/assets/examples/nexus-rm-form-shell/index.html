@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta
+      name="description"
+      content="A local-only proof of concept for a NEXUS relationship manager visit form using Web Awesome Free."
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+    />
+    <title>NEXUS RM Form Shell</title>
+    <link rel="stylesheet" href="/dist/styles/themes/default.css" />
+    <link rel="stylesheet" href="/dist/styles/webawesome.css" />
+    <link rel="stylesheet" href="./shell.css" />
+    <script type="module" src="/dist/webawesome.loader.js"></script>
+    <script type="module" src="./shell.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#visit-form">Skip to form</a>
+
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">NEXUS · Relationship Manager</p>
+        <h1>Site Visit Capture</h1>
+      </div>
+      <wa-badge variant="success" appearance="outlined" pill>Local session</wa-badge>
+    </header>
+
+    <main>
+      <section class="status-panel" aria-labelledby="progress-title">
+        <div class="status-copy">
+          <span id="progress-title">Visit record progress</span>
+          <strong id="progress-label">Step 1 of 3</strong>
+        </div>
+        <wa-progress-bar id="progress" value="33" aria-label="Visit record progress"></wa-progress-bar>
+      </section>
+
+      <wa-callout variant="brand" appearance="outlined">
+        <strong>Privacy boundary:</strong> this proof of concept sends nothing over the network and does not retain form
+        data. Use fictional or redacted information only.
+      </wa-callout>
+
+      <form id="visit-form" novalidate>
+        <section class="form-step" data-step="1" aria-labelledby="step-1-title">
+          <div class="section-heading">
+            <span>01</span>
+            <div>
+              <h2 id="step-1-title">Visit context</h2>
+              <p>Identify the visit without entering confidential customer information.</p>
+            </div>
+          </div>
+
+          <div class="field-grid">
+            <wa-input
+              id="reference"
+              name="reference"
+              label="Internal reference"
+              hint="Use a non-identifying reference, for example DEMO-001."
+              placeholder="DEMO-001"
+              required
+            ></wa-input>
+
+            <wa-input id="visit-date" name="visit-date" type="date" label="Visit date" required></wa-input>
+
+            <wa-select id="visit-type" name="visit-type" label="Visit type" value="monitoring" required>
+              <wa-option value="monitoring">Monitoring visit</wa-option>
+              <wa-option value="new-request">New financing request</wa-option>
+              <wa-option value="annual-review">Annual review</wa-option>
+            </wa-select>
+
+            <wa-select id="industry" name="industry" label="Industry" placeholder="Select industry" required>
+              <wa-option value="construction">Construction</wa-option>
+              <wa-option value="manufacturing">Manufacturing</wa-option>
+              <wa-option value="services">Business services</wa-option>
+              <wa-option value="transport">Transport and logistics</wa-option>
+              <wa-option value="other">Other</wa-option>
+            </wa-select>
+          </div>
+        </section>
+
+        <section class="form-step" data-step="2" aria-labelledby="step-2-title" hidden>
+          <div class="section-heading">
+            <span>02</span>
+            <div>
+              <h2 id="step-2-title">Observed evidence</h2>
+              <p>Separate direct observations from interpretation.</p>
+            </div>
+          </div>
+
+          <wa-textarea
+            id="observations"
+            name="observations"
+            label="What was directly observed?"
+            hint="Record visible operations, stock, staff activity and documents sighted. Avoid unsupported conclusions."
+            rows="5"
+            maxlength="800"
+            with-count
+            required
+          ></wa-textarea>
+
+          <wa-radio-group id="activity" name="activity" label="Operating activity observed" value="normal" required>
+            <wa-radio value="normal">Normal</wa-radio>
+            <wa-radio value="reduced">Reduced</wa-radio>
+            <wa-radio value="stopped">Stopped</wa-radio>
+            <wa-radio value="unclear">Unable to determine</wa-radio>
+          </wa-radio-group>
+
+          <fieldset>
+            <legend>Evidence sighted</legend>
+            <div class="check-grid">
+              <wa-checkbox name="evidence" value="premises">Business premises</wa-checkbox>
+              <wa-checkbox name="evidence" value="inventory">Inventory or work in progress</wa-checkbox>
+              <wa-checkbox name="evidence" value="documents">Supporting documents</wa-checkbox>
+              <wa-checkbox name="evidence" value="management">Management representative</wa-checkbox>
+            </div>
+          </fieldset>
+        </section>
+
+        <section class="form-step" data-step="3" aria-labelledby="step-3-title" hidden>
+          <div class="section-heading">
+            <span>03</span>
+            <div>
+              <h2 id="step-3-title">RM assessment</h2>
+              <p>Capture preliminary judgment for review, not an approval decision.</p>
+            </div>
+          </div>
+
+          <wa-select id="risk-signal" name="risk-signal" label="Preliminary risk signal" value="stable" required>
+            <wa-option value="stable">Stable — no immediate concern observed</wa-option>
+            <wa-option value="watch">Watch — clarification or monitoring needed</wa-option>
+            <wa-option value="escalate">Escalate — material concern requires review</wa-option>
+          </wa-select>
+
+          <wa-textarea
+            id="follow-up"
+            name="follow-up"
+            label="Recommended follow-up"
+            hint="State the action, owner and expected completion date."
+            rows="4"
+            maxlength="500"
+            with-count
+            required
+          ></wa-textarea>
+
+          <wa-checkbox id="attestation" required>
+            I confirm this draft distinguishes observed evidence from my preliminary interpretation.
+          </wa-checkbox>
+
+          <wa-details summary="Governance boundary">
+            This shell does not calculate a score, evaluate policy, approve financing or create a canonical customer
+            record. A completed draft must pass through NEXUS evidence verification and the authorized approval
+            workflow.
+          </wa-details>
+        </section>
+
+        <div class="form-actions">
+          <wa-button id="back" type="button" appearance="outlined" disabled>Back</wa-button>
+          <span id="form-message" role="status" aria-live="polite"></span>
+          <wa-button id="next" type="button" variant="brand" appearance="filled">Continue</wa-button>
+          <wa-button id="review" type="submit" variant="brand" appearance="filled" hidden>Prepare draft</wa-button>
+        </div>
+      </form>
+
+      <wa-card id="draft" class="draft-card" tabindex="-1" hidden>
+        <div class="draft-heading">
+          <div>
+            <p class="eyebrow">Review copy · not submitted</p>
+            <h2>Site visit draft</h2>
+          </div>
+          <wa-badge id="draft-signal" appearance="filled">Stable</wa-badge>
+        </div>
+        <dl id="draft-summary"></dl>
+        <wa-callout variant="warning" appearance="outlined">
+          Human verification is required before this information enters a governed NEXUS record.
+        </wa-callout>
+        <div class="draft-actions">
+          <wa-button id="edit" type="button" appearance="outlined">Edit draft</wa-button>
+          <wa-button id="clear" type="button" variant="danger" appearance="outlined">Clear session</wa-button>
+        </div>
+      </wa-card>
+    </main>
+  </body>
+</html>
